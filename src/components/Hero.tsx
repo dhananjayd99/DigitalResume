@@ -1,80 +1,144 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRef } from "react";
+import { useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { Download, ArrowRight, Github, Linkedin, Mail } from "lucide-react";
 
+import Magnetic from "./Magnetic";
+
 export default function Hero() {
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
+        mouseX.set(clientX / innerWidth - 0.5);
+        mouseY.set(clientY / innerHeight - 0.5);
+    };
+
+    const orb1X = useSpring(useTransform(mouseX, [-0.5, 0.5], [-20, 20]));
+    const orb1Y = useSpring(useTransform(mouseY, [-0.5, 0.5], [-20, 20]));
+    const orb2X = useSpring(useTransform(mouseX, [-0.5, 0.5], [20, -20]));
+    const orb2Y = useSpring(useTransform(mouseY, [-0.5, 0.5], [20, -20]));
+
     return (
         <section
             id="home"
-            className="min-h-screen flex items-center justify-center pt-20 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+            onMouseMove={handleMouseMove}
+            className="min-h-screen flex items-center justify-center pt-20 pb-12 px-4 sm:px-6 lg:px-8 relative bg-white"
         >
-            {/* Background decoration */}
-            <div className="absolute top-0 -left-4 w-72 h-72 bg-accent/10 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
-            <div className="absolute top-0 -right-4 w-72 h-72 bg-purple-300/10 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>
+            <motion.div
+                style={{ x: orb1X, y: orb1Y }}
+                className="absolute top-0 -left-4 w-72 h-72 bg-accent/10 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"
+            ></motion.div>
+            <motion.div
+                style={{ x: orb2X, y: orb2Y }}
+                className="absolute top-0 -right-4 w-72 h-72 bg-purple-300/10 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"
+            ></motion.div>
             <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300/10 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-4000"></div>
 
             <div className="max-w-4xl mx-auto text-center relative z-10">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                 >
                     <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
-                        Hi, I'm <span className="text-accent inline-block">Dhananjay Joshi</span>
+                        Hi, I'm{" "}
+                        <span className="text-accent inline-block cursor-default">
+                            {"Dhananjay Joshi".split("").map((char, index) => (
+                                <motion.span
+                                    key={index}
+                                    initial={{
+                                        opacity: 0,
+                                        x: Math.random() * 400 - 200,
+                                        y: Math.random() * 400 - 200,
+                                        rotate: Math.random() * 90 - 45,
+                                        scale: 0.5,
+                                        filter: "blur(10px)"
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        x: 0,
+                                        y: 0,
+                                        rotate: 0,
+                                        scale: 1,
+                                        filter: "blur(0px)"
+                                    }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: index * 0.05,
+                                        type: "spring",
+                                        stiffness: 100,
+                                        damping: 10
+                                    }}
+                                    className="inline-block"
+                                    style={{ whiteSpace: char === " " ? "pre" : "normal" }}
+                                >
+                                    {char}
+                                </motion.span>
+                            ))}
+                        </span>
                     </h1>
                 </motion.div>
 
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
                 >
-                    <h2 className="text-xl md:text-3xl text-gray-600 dark:text-gray-300 mb-8 font-medium">
+                    <h2 className="text-xl md:text-3xl text-gray-600 mb-8 font-medium">
                         MBA (Data Science & AI) | Product & Implementation Leader | Data-Driven Problem Solver
                     </h2>
                 </motion.div>
 
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
                 >
-
-                    <a
-                        href="https://drive.google.com/file/d/1txSUhd1YUXIuck3rU9bLN6dUFxEarXrQ/view?usp=sharing"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full sm:w-auto px-8 py-3 rounded-full bg-white dark:bg-darkGrey text-foreground border border-gray-200 dark:border-gray-700 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center"
-                    >
-                        <Download className="mr-2 w-4 h-4" />
-                        Resume
-                    </a>
+                    <Magnetic>
+                        <a
+                            href="https://drive.google.com/file/d/1txSUhd1YUXIuck3rU9bLN6dUFxEarXrQ/view?usp=sharing"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full sm:w-auto px-10 py-4 rounded-full bg-accent text-white font-bold hover:bg-blue-600 transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] flex items-center justify-center group"
+                        >
+                            <Download className="mr-2 w-5 h-5 group-hover:animate-bounce" />
+                            Resume
+                        </a>
+                    </Magnetic>
                 </motion.div>
 
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                    className="flex justify-center space-x-6 text-gray-500 hover:text-gray-600 dark:hover:text-gray-400"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 2.0 }}
+                    className="flex justify-center space-x-8 text-gray-500"
                 >
-                    <a
-                        href="https://www.linkedin.com/in/dhananjay-joshii/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="transform hover:scale-110 hover:text-accent transition-all duration-200"
-                        aria-label="LinkedIn"
-                    >
-                        <Linkedin className="w-8 h-8" />
-                    </a>
-                    <a
-                        href="mailto:dhananjayjoshi2770@gmail.com"
-                        className="transform hover:scale-110 hover:text-accent transition-all duration-200"
-                        aria-label="Email"
-                    >
-                        <Mail className="w-8 h-8" />
-                    </a>
+                    <Magnetic>
+                        <a
+                            href="https://www.linkedin.com/in/dhananjay-joshii/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="transform hover:scale-125 hover:text-accent transition-all duration-300 block"
+                            aria-label="LinkedIn"
+                        >
+                            <Linkedin className="w-10 h-10" />
+                        </a>
+                    </Magnetic>
+                    <Magnetic>
+                        <a
+                            href="mailto:dhananjayjoshi2770@gmail.com"
+                            className="transform hover:scale-125 hover:text-accent transition-all duration-300 block"
+                            aria-label="Email"
+                        >
+                            <Mail className="w-10 h-10" />
+                        </a>
+                    </Magnetic>
                 </motion.div>
             </div>
         </section>

@@ -29,7 +29,7 @@ export default function Navbar() {
     return (
         <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? "bg-white/80 dark:bg-darkGrey/80 backdrop-blur-md shadow-sm py-3"
+                ? "bg-white/80 backdrop-blur-md shadow-sm py-3"
                 : "bg-transparent py-5"
                 }`}
         >
@@ -47,7 +47,7 @@ export default function Navbar() {
                             <a
                                 key={link.name}
                                 href={link.href}
-                                className="text-foreground hover:text-accent transition-colors font-medium text-sm"
+                                className="text-gray-700 hover:text-accent transition-colors font-medium text-sm"
                             >
                                 {link.name}
                             </a>
@@ -58,7 +58,7 @@ export default function Navbar() {
                     <div className="md:hidden flex items-center">
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="text-foreground hover:text-accent focus:outline-none"
+                            className="text-gray-700 hover:text-accent focus:outline-none"
                         >
                             {isOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -81,7 +81,7 @@ export default function Navbar() {
                                     key={link.name}
                                     href={link.href}
                                     onClick={() => setIsOpen(false)}
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800"
+                                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-accent hover:bg-gray-50"
                                 >
                                     {link.name}
                                 </a>

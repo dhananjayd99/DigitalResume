@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Briefcase, Calendar } from "lucide-react";
 import Image from "next/image";
 
@@ -74,8 +75,20 @@ const experiences = [
 ];
 
 export default function Experience() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end end"]
+    });
+
+    const scaleY = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
     return (
-        <section id="experience" className="py-20 bg-white dark:bg-black">
+        <section id="experience" className="py-20 bg-white relative">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -84,61 +97,83 @@ export default function Experience() {
                     transition={{ duration: 0.5 }}
                     className="text-center max-w-3xl mx-auto mb-20 md:mb-24"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Professional Experience</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Professional Experience</h2>
                     <div className="w-20 h-1 bg-accent mx-auto rounded-full"></div>
                 </motion.div>
 
-                <div className="relative max-w-3xl mx-auto pb-12">
-                    {/* Vertical Timeline Line */}
-                    <div className="absolute left-[40px] md:left-[56px] top-6 bottom-0 w-1 bg-gray-200 dark:bg-gray-800 rounded-full z-0 transform -translate-x-1/2"></div>
+                <div ref={containerRef} className="relative max-w-3xl mx-auto pb-12">
+                    {/* Background Line */}
+                    <div className="absolute left-[40px] md:left-[56px] top-6 bottom-0 w-1 bg-gray-100 rounded-full z-0 transform -translate-x-1/2"></div>
+
+                    {/* Animated Progress Line */}
+                    <motion.div
+                        style={{ scaleY, originY: 0, x: "-50%" }}
+                        className="absolute left-[40px] md:left-[56px] top-6 bottom-0 w-1 bg-accent rounded-full z-1"
+                    ></motion.div>
 
                     {experiences.map((exp, index) => (
                         <div key={exp.id} className="relative flex items-center mb-16 md:mb-24 group cursor-default z-10 hover:z-20">
 
                             {/* Timeline Dot (Logo) */}
-                            <div className="absolute left-[40px] md:left-[56px] transform -translate-x-1/2 w-20 h-20 md:w-28 md:h-28 rounded-full bg-white border-4 border-accent flex items-center justify-center z-20 shadow-xl overflow-hidden group-hover:scale-110 group-hover:border-blue-500 transition-all duration-300">
-                                {exp.logo ? (
-                                    <div className="relative w-full h-full bg-white flex items-center justify-center">
-                                        <Image
-                                            src={exp.logo}
-                                            alt={exp.company}
-                                            fill
-                                            className={exp.logoClass ?? "object-cover"}
-                                        />
-                                    </div>
-                                ) : (
-                                    <Briefcase className="w-8 h-8 md:w-10 md:h-10 text-accent" />
-                                )}
-                            </div>
+                            <motion.div
+                                initial={{ scale: 0, opacity: 0, x: "-50%" }}
+                                whileInView={{ scale: 1, opacity: 1, x: "-50%" }}
+                                animate={{
+                                    y: [0, -5, 0],
+                                }}
+                                viewport={{ once: true, margin: "0px" }}
+                                transition={{
+                                    opacity: { duration: 0.4, delay: 0 },
+                                    scale: { type: "spring", stiffness: 260, damping: 20, delay: 0 },
+                                    y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }
+                                }}
+                                className="absolute left-[40px] md:left-[56px] w-20 h-20 md:w-28 md:h-28 rounded-full bg-white border-4 border-accent flex items-center justify-center z-20 shadow-xl overflow-hidden group-hover:border-blue-500 transition-colors duration-300"
+                            >
+                                <div className="w-full h-full relative flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                                    {exp.logo ? (
+                                        <div className="relative w-full h-full bg-white flex items-center justify-center">
+                                            <Image
+                                                src={exp.logo}
+                                                alt={exp.company}
+                                                fill
+                                                priority
+                                                className={exp.logoClass ?? "object-cover"}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <Briefcase className="w-8 h-8 md:w-10 md:h-10 text-accent" />
+                                    )}
+                                </div>
+                            </motion.div>
 
                             {/* Visible Summary (Role + Company) aligned left after logo */}
                             <motion.div
-                                initial={{ opacity: 0, x: 20 }}
+                                initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: "-50px" }}
-                                transition={{ duration: 0.5, delay: 0.2 }}
-                                className="w-full pl-[96px] md:pl-[140px]"
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                                className="w-full pl-[100px] md:pl-[180px]"
                             >
-                                <h3 className="text-xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-accent transition-colors">{exp.role}</h3>
+                                <h3 className="text-xl md:text-3xl font-bold text-gray-900 mb-1 group-hover:text-accent transition-colors">{exp.role}</h3>
                                 <div className="text-lg md:text-xl font-medium text-gray-500 block">{exp.company}</div>
 
                                 {/* Hover Card with Full Details */}
-                                <div className="pt-4 w-full md:absolute md:top-full md:left-[140px] md:w-[600px] opacity-100 md:opacity-0 md:invisible md:group-hover:opacity-100 md:group-hover:visible hover:opacity-100 hover:visible md:transform md:-translate-y-4 md:group-hover:translate-y-4 transition-all duration-300 z-30">
+                                <div className="pt-4 w-full md:absolute md:top-full md:left-[140px] md:w-[600px] opacity-100 md:opacity-0 md:invisible md:group-hover:opacity-100 md:group-hover:visible hover:opacity-100 hover:visible md:transform md:-translate-y-4 md:group-hover:translate-y-4 transition-all duration-300 z-50">
                                     <div className="hidden md:block absolute -top-8 h-8 w-full left-0"></div>
-                                    <div className="bg-white dark:bg-darkGrey rounded-2xl p-6 md:p-8 shadow-2xl border border-gray-100 dark:border-gray-800 pointer-events-none md:pointer-events-auto">
-                                        <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-gray-500 mb-6 border-b border-gray-100 dark:border-gray-800 pb-4">
-                                            <div className="flex items-center font-bold bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 px-3 py-1 rounded-full">
+                                    <div className="bg-white rounded-2xl p-6 md:p-8 shadow-2xl border border-gray-100 pointer-events-none md:pointer-events-auto">
+                                        <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-gray-500 mb-6 border-b border-gray-100 pb-4">
+                                            <div className="flex items-center font-bold bg-blue-50 text-blue-700 px-3 py-1 rounded-full">
                                                 <Calendar className="w-4 h-4 mr-2" />
                                                 {exp.period}
                                             </div>
                                             {exp.client && (
-                                                <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                <div className="text-sm font-semibold text-gray-700">
                                                     {exp.client}
                                                 </div>
                                             )}
                                         </div>
 
-                                        <ul className="space-y-4 text-gray-600 dark:text-gray-400 text-sm md:text-base text-left">
+                                        <ul className="space-y-4 text-gray-600 text-sm md:text-base text-left">
                                             {exp.description.map((item, i) => (
                                                 <li key={i} className="flex items-start">
                                                     <span className="text-accent mt-[6px] mr-3 text-xs flex-shrink-0">●</span>

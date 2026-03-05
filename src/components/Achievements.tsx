@@ -33,7 +33,7 @@ const achievements = [
 
 export default function Achievements() {
     return (
-        <section id="achievements" className="py-20 bg-white dark:bg-black">
+        <section id="achievements" className="py-20 bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -42,7 +42,7 @@ export default function Achievements() {
                     transition={{ duration: 0.5 }}
                     className="text-center max-w-3xl mx-auto mb-16"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Leadership & Achievements</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Leadership & Achievements</h2>
                     <div className="w-20 h-1 bg-accent mx-auto rounded-full"></div>
                 </motion.div>
 
@@ -54,13 +54,13 @@ export default function Achievements() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 text-center hover:-translate-y-2 transition-transform duration-300"
+                            className="bg-white rounded-2xl p-6 border border-gray-100 text-center hover:-translate-y-2 transition-transform duration-300 shadow-sm"
                         >
-                            <div className="w-16 h-16 mx-auto bg-white dark:bg-darkGrey rounded-full flex items-center justify-center shadow-sm mb-6">
+                            <div className="w-16 h-16 mx-auto bg-blue-50 rounded-full flex items-center justify-center shadow-sm mb-6 border border-blue-100">
                                 {item.icon}
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{item.title}</h3>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm">{item.description}</p>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                            <p className="text-gray-600 text-sm">{item.description}</p>
                         </motion.div>
                     ))}
                 </div>
