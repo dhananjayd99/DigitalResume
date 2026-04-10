@@ -47,38 +47,44 @@ export default function Hero() {
                 >
                     <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
                         Hi, I'm{" "}
-                        <span className="text-accent inline-block cursor-default">
-                            {"Dhananjay Joshi".split("").map((char, index) => (
-                                <motion.span
-                                    key={index}
-                                    initial={{
-                                        opacity: 0,
-                                        x: Math.random() * 400 - 200,
-                                        y: Math.random() * 400 - 200,
-                                        rotate: Math.random() * 90 - 45,
-                                        scale: 0.5,
-                                        filter: "blur(10px)"
-                                    }}
-                                    animate={{
-                                        opacity: 1,
-                                        x: 0,
-                                        y: 0,
-                                        rotate: 0,
-                                        scale: 1,
-                                        filter: "blur(0px)"
-                                    }}
-                                    transition={{
-                                        duration: 0.8,
-                                        delay: index * 0.05,
-                                        type: "spring",
-                                        stiffness: 100,
-                                        damping: 10
-                                    }}
-                                    className="inline-block"
-                                    style={{ whiteSpace: char === " " ? "pre" : "normal" }}
-                                >
-                                    {char}
-                                </motion.span>
+                        <span className="text-accent cursor-default">
+                            {"Dhananjay Joshi".split(" ").map((word, wordIndex) => (
+                                <span key={wordIndex} className="inline-block whitespace-nowrap mr-[0.25em] last:mr-0">
+                                    {word.split("").map((char, charIndex) => {
+                                        const index = wordIndex * 10 + charIndex;
+                                        return (
+                                            <motion.span
+                                                key={charIndex}
+                                                initial={{
+                                                    opacity: 0,
+                                                    x: Math.random() * 400 - 200,
+                                                    y: Math.random() * 400 - 200,
+                                                    rotate: Math.random() * 90 - 45,
+                                                    scale: 0.5,
+                                                    filter: "blur(10px)"
+                                                }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    x: 0,
+                                                    y: 0,
+                                                    rotate: 0,
+                                                    scale: 1,
+                                                    filter: "blur(0px)"
+                                                }}
+                                                transition={{
+                                                    duration: 0.8,
+                                                    delay: index * 0.05,
+                                                    type: "spring",
+                                                    stiffness: 100,
+                                                    damping: 10
+                                                }}
+                                                className="inline-block"
+                                            >
+                                                {char}
+                                            </motion.span>
+                                        );
+                                    })}
+                                </span>
                             ))}
                         </span>
                     </h1>
