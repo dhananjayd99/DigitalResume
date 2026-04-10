@@ -30,7 +30,7 @@ function AnimatedSphere() {
 
 export default function HeroModel() {
     return (
-        <div className="absolute inset-0 z-0 opacity-15 md:opacity-20 pointer-events-auto mix-blend-multiply dark:mix-blend-screen">
+        <div className="absolute inset-0 z-0 opacity-15 md:opacity-20 pointer-events-none md:pointer-events-auto mix-blend-multiply dark:mix-blend-screen">
             <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
                 <ambientLight intensity={1} />
                 <directionalLight position={[2, 2, 5]} intensity={2} />
