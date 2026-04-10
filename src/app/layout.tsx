@@ -12,19 +12,29 @@ export const metadata: Metadata = {
     description: 'MBA (Data Science & AI) | Product & Implementation Leader',
 };
 
+import { ThemeProvider } from '@/components/ThemeProvider';
+import CustomCursor from '@/components/CustomCursor';
+import Chatbot from '@/components/Chatbot';
+import SpotifyPlayer from '@/components/SpotifyPlayer';
+
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth">
+        <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <body className={`${inter.className} bg-background text-foreground antialiased relative`}>
-                <BackgroundParticles />
-                <Navbar />
-                <main className="relative z-10">
-                    {children}
-                </main>
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                    <CustomCursor />
+                    <Chatbot />
+                    <SpotifyPlayer />
+                    <BackgroundParticles />
+                    <Navbar />
+                    <main className="relative z-10">
+                        {children}
+                    </main>
+                </ThemeProvider>
             </body>
         </html>
     );

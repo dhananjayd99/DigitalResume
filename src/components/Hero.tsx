@@ -6,6 +6,9 @@ import { useScroll, useTransform, useSpring, useMotionValue } from "framer-motio
 import { Download, ArrowRight, Github, Linkedin, Mail } from "lucide-react";
 
 import Magnetic from "./Magnetic";
+import dynamic from "next/dynamic";
+
+const HeroModel = dynamic(() => import("./HeroModel"), { ssr: false });
 
 export default function Hero() {
     const mouseX = useMotionValue(0);
@@ -27,19 +30,11 @@ export default function Hero() {
         <section
             id="home"
             onMouseMove={handleMouseMove}
-            className="min-h-screen flex items-center justify-center pt-20 pb-12 px-4 sm:px-6 lg:px-8 relative bg-white"
+            className="min-h-screen flex items-center justify-center pt-20 pb-12 px-4 sm:px-6 lg:px-8 relative bg-white dark:bg-background overflow-hidden"
         >
-            <motion.div
-                style={{ x: orb1X, y: orb1Y }}
-                className="absolute top-0 -left-4 w-72 h-72 bg-accent/10 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"
-            ></motion.div>
-            <motion.div
-                style={{ x: orb2X, y: orb2Y }}
-                className="absolute top-0 -right-4 w-72 h-72 bg-purple-300/10 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"
-            ></motion.div>
-            <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300/10 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-4000"></div>
+            <HeroModel />
 
-            <div className="max-w-4xl mx-auto text-center relative z-10">
+            <div className="max-w-4xl mx-auto text-center relative z-10 pointer-events-none">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -95,7 +90,7 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
                 >
-                    <h2 className="text-xl md:text-3xl text-gray-600 mb-8 font-medium">
+                    <h2 className="text-xl md:text-3xl text-gray-600 dark:text-gray-300 mb-8 font-medium">
                         MBA (Data Science & AI) | Product & Implementation Leader | Data-Driven Problem Solver
                     </h2>
                 </motion.div>

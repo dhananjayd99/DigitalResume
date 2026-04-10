@@ -9,11 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heyputer/puter.js": "^2.2.15",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
+    "@types/three": "^0.183.1",
     "framer-motion": "^11.5.0",
     "lucide-react": "^0.436.0",
     "next": "14.2.7",
+    "next-themes": "^0.4.6",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "recharts": "^3.8.1",
+    "three": "^0.183.2"
   },
   "devDependencies": {
     "@types/node": "^20",

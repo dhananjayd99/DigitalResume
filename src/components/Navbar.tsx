@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
     { name: "About", href: "#about" },
@@ -29,7 +30,7 @@ export default function Navbar() {
     return (
         <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? "bg-white/80 backdrop-blur-md shadow-sm py-3"
+                ? "bg-white/80 dark:bg-black/80 backdrop-blur-md shadow-sm py-3"
                 : "bg-transparent py-5"
                 }`}
         >
@@ -42,23 +43,25 @@ export default function Navbar() {
                     </div>
 
                     {/* Desktop Menu */}
-                    <div className="hidden md:flex space-x-8">
+                    <div className="hidden md:flex items-center space-x-8">
                         {navLinks.map((link) => (
                             <a
                                 key={link.name}
                                 href={link.href}
-                                className="text-gray-700 hover:text-accent transition-colors font-medium text-sm"
+                                className="text-gray-700 dark:text-gray-300 hover:text-accent dark:hover:text-accent transition-colors font-medium text-sm"
                             >
                                 {link.name}
                             </a>
                         ))}
+                        <ThemeToggle />
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <div className="md:hidden flex items-center">
+                    <div className="md:hidden flex items-center space-x-4">
+                        <ThemeToggle />
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="text-gray-700 hover:text-accent focus:outline-none"
+                            className="text-gray-700 dark:text-gray-300 hover:text-accent dark:hover:text-accent focus:outline-none"
                         >
                             {isOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -81,7 +84,7 @@ export default function Navbar() {
                                     key={link.name}
                                     href={link.href}
                                     onClick={() => setIsOpen(false)}
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-accent hover:bg-gray-50"
+                                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-accent dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800/50"
                                 >
                                     {link.name}
                                 </a>
